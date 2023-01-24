@@ -8,7 +8,7 @@ export const FIREBASE_PRIVATE_KEY = <string>(
 );
 
 export const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY ?? "sarasa";
-
+// git config --global remote.origin.url=
 const secondDay = 60 * 60 * 24; // un día
 export const TOKEN_EXPIRE_IN = parseInt(
   process.env.TOKEN_EXPIRE_IN ?? `${secondDay}`
