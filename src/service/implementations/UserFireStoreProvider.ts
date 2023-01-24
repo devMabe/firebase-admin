@@ -8,6 +8,14 @@ import * as admin from "firebase-admin";
 export class UserFireStoreProvider implements IIUserStorageProvider {
   constructor(private repos: FirebaseRepoProvider) {}
 
+  async getByEmail(email: string): Promise<IUser | undefined> {
+    const users = await this.repos.usersRepo
+      .whereEqualTo("email", email)
+      .find();
+    if (users && users.length > 0) return users[0];
+    return undefined;
+  }
+
   toUser(to_user: Partial<IUser>): UserFS {
     return Object.assign(new UserFS(), to_user);
   }
@@ -22,7 +30,8 @@ export class UserFireStoreProvider implements IIUserStorageProvider {
     const u = new UserFS();
     const newUserUID = await this.createFirebaseUser(
       IUserCreationParams.email,
-      IUserCreationParams.password
+      IUserCreationParams.password,
+      `${IUserCreationParams.name} ${IUserCreationParams.lastname}`
     );
     Object.assign(u, IUserCreationParams);
     u.id = newUserUID;
@@ -32,13 +41,16 @@ export class UserFireStoreProvider implements IIUserStorageProvider {
     return res;
   }
 
-  async createFirebaseUser(email?: string, password?: string): Promise<string> {
-    console.log("Creating FirebaseAuth User with email:" + email);
+  async createFirebaseUser(
+    email?: string,
+    password?: string,
+    displayName?: string
+  ): Promise<string> {
     const userRecord = await admin.auth().createUser({
       email,
       password,
+      displayName,
     });
-    console.log("New user uid:" + userRecord.uid);
     return userRecord.uid;
   }
 

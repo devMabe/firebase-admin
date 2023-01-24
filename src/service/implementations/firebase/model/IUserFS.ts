@@ -8,4 +8,5 @@ export class UserFS implements IUser {
   lastname: string;
   companyName: string;
   email: string;
+  password: string;
 }

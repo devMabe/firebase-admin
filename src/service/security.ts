@@ -20,7 +20,6 @@ export function createJWT(data: TokenData): string {
   const token = jwt.sign({ data }, TOKEN_SECRET_KEY, {
     expiresIn: TOKEN_EXPIRE_IN,
   });
-  console.log("New token generated: " + token);
   return token;
 }
 
@@ -57,7 +56,6 @@ export async function generateToken({
   user: IUser;
 }): Promise<TokenResponse> {
   const token = buildTokenFromUser(user);
-  console.log("TODO: find user in FirebaseAuth DB then generate token");
   const fbtoken = await admin.auth().createCustomToken(user.id);
   return { token: token, fbtoken: fbtoken };
 }

@@ -11,3 +11,8 @@ export interface TokenData {
   companyName?: string;
   plan?: any;
 }
+
+export type authByEmailParams = {
+  email: string;
+  password: string;
+};

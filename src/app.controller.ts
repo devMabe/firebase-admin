@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { authByEmailParams, TokenResponse } from "./models/auth.model";
 import { IUser } from "./models/user.model";
-
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -16,8 +16,13 @@ export class AppController {
     return this.appService.getUsuarios();
   }
 
-  @Post("users")
-  crateUser(@Body() body: Partial<Omit<IUser, "id">>) {
-    return this.appService.createUser(body);
+  @Post("login")
+  login(@Body() body: authByEmailParams): Promise<TokenResponse> {
+    return this.appService.loginUserByEmail(body);
+  }
+
+  @Post("register")
+  register(@Body() body: IUser) {
+    return this.appService.registerUser(body);
   }
 }
